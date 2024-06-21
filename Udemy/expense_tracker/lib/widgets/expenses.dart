@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:expense_tracker/widgets/expenses_list/expenses_list.dart';
 import 'package:expense_tracker/widgets/new_expense.dart';
 import 'package:flutter/cupertino.dart';
@@ -30,32 +32,67 @@ class _Expenses extends State<Expenses>{
   ];
 
   void _openAddExpenseOverlay(){
-    showModalBottomSheet(context: context, builder: (ctx) {
-      return NewExpense();
+    showModalBottomSheet(
+      isScrollControlled: true, context: context, builder: (ctx) {
+      return NewExpense(onAddExpense: addExpense,);
     });
 
   }
 
+  void addExpense(Expense expense){
+    setState(() {
+      _registeredExpense.add(expense);
+    });
+  }
+
+  void removeExpense(Expense expense){
+    final expenseIndex = _registeredExpense.indexOf(expense);
+    setState(() {
+      _registeredExpense.remove(expense);
+    });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(duration: Duration(seconds: 3),
+      content: Text("Expense Deleted!"),
+      action: SnackBarAction(
+        label: "Undo",
+        onPressed: (){
+          _registeredExpense.insert(expenseIndex, expense);
+          setState(() {
+
+          });
+        },
+      ),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(onPressed: _openAddExpenseOverlay, icon: Icon(Icons.add))
-        ],
-        title: const Text("Expense Tracker"),
-        backgroundColor: Colors.yellow,
-      ),
-      body: Center(
+
+    Widget mainContent = const Center(
+      child: Text("No Expenses to show Click + to add."),
+    );
+    if(_registeredExpense.isNotEmpty){
+      mainContent = Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Text("The chart"),
-            Expanded(child: ExpensesList(expenses: _registeredExpense))
+            Expanded(child: ExpensesList(expenses: _registeredExpense, onRemoveExpense: removeExpense,))
           ],
         ),
+      );
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        actions: [
+          IconButton(onPressed: _openAddExpenseOverlay, icon: const Icon(Icons.add))
+        ],
+        title: const Text("Expense Tracker"),
+        backgroundColor: Colors.yellow,
       ),
+      body: mainContent
     );
   }
   
