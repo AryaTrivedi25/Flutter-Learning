@@ -10,9 +10,10 @@ class ExpenseItem extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: EdgeInsets.all(15),
       child: Padding(
         padding: const EdgeInsets.symmetric(
-          horizontal: 20,
+          horizontal: 30,
           vertical: 16
         ),
         child: Column(
@@ -25,9 +26,9 @@ class ExpenseItem extends StatelessWidget{
               const Spacer(),
                 Row(
                   children: [
-                    Icon(Icons.alarm),
-                    SizedBox(width: 8,),
-                    Text(expense.date.toString()),
+                    Icon(categoryIcons[expense.category]),
+                    const SizedBox(width: 8,),
+                    Text(expense.formattedDate),
                   ],
                 )
               ],
