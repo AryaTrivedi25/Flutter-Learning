@@ -3,6 +3,7 @@ import 'package:expense_tracker/widgets/new_expense.dart';
 import 'package:flutter/material.dart';
 
 import '../models/expense.dart';
+import 'Chart/chart.dart';
 
 class Expenses extends StatefulWidget{
   const Expenses({super.key});
@@ -30,6 +31,7 @@ class _Expenses extends State<Expenses>{
 
   void _openAddExpenseOverlay(){
     showModalBottomSheet(
+      backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       isScrollControlled: true, context: context, builder: (ctx) {
       return NewExpense(onAddExpense: addExpense,);
     });
@@ -74,7 +76,7 @@ class _Expenses extends State<Expenses>{
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text("The chart"),
+            Chart(expenses: _registeredExpense,),
             Expanded(child: ExpensesList(expenses: _registeredExpense, onRemoveExpense: removeExpense,))
           ],
         ),
@@ -84,13 +86,14 @@ class _Expenses extends State<Expenses>{
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(onPressed: _openAddExpenseOverlay, icon: const Icon(Icons.add))
+          IconButton(onPressed: _openAddExpenseOverlay, icon: const Icon(Icons.add,))
         ],
         title: const Text("Expense Tracker"),
-        backgroundColor: Colors.yellow,
       ),
       body: mainContent
     );
   }
   
 }
+
+

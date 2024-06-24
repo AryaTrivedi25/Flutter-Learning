@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:expense_tracker/models/expense.dart' as expense;
@@ -27,12 +26,14 @@ class _NewExpenseState extends State<NewExpense> {
     if(title.text.trim().isEmpty || amountIsInvalid || selectedDate == null){
       showDialog(context: context, builder: (ctx) {
         return AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.secondaryContainer,
           title: const Text("Invalid Input..!!"),
           content: const Text("Please make sure that all the values entered are correct"),
           actions: [
             TextButton(onPressed: (){
               Navigator.pop(ctx);
-            }, child: const Text("okay"))
+            }, child: const Text("okay"),
+            style: Theme.of(context).textButtonTheme.style,),
           ],
         );
       });
@@ -87,17 +88,18 @@ class _NewExpenseState extends State<NewExpense> {
               ),
               const Spacer(),
               Expanded(child: Text(selectedDate == null ? "No date Selected" :(DateFormat.yMMMd().format(selectedDate!)).toString())),
-              Expanded(child: IconButton(onPressed: (){presentDatePicker();}, icon: const Icon(Icons.calendar_month))),
+              Expanded(child: IconButton(onPressed: (){presentDatePicker();}, icon: const Icon(Icons.calendar_month, color: Colors.black,))),
             ],
           ),
           const SizedBox(height: 16,),
           Row(
             children: [
              DropdownButton(
+                style: Theme.of(context).textTheme.bodySmall,
                  value: selectedCategory ,
                  items: expense.Category.values.map((category) => DropdownMenuItem(
                    value: category,
-                  child: Text(category.name.toUpperCase()))).toList() ,
+                  child: Text(category.name.toUpperCase(),))).toList() ,
                  onChanged: (value){
                    if(value == null){
                      return;
@@ -107,10 +109,11 @@ class _NewExpenseState extends State<NewExpense> {
                   });
                   }),
               const Spacer(),
-              ElevatedButton(onPressed: (){
+              TextButton(
+                  onPressed: (){
                 Navigator.pop(context);
-              }, child: const Text("Cancel")),
-              ElevatedButton(onPressed: submitExpenseData, child: const Text("Save"))
+              }, child: const Text("Cancel", style: TextStyle(color: Colors.black),)),
+              ElevatedButton(onPressed: submitExpenseData, child: const Text("Save",))
             ],
           )
         ],
