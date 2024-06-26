@@ -31,6 +31,7 @@ class _Expenses extends State<Expenses>{
 
   void _openAddExpenseOverlay(){
     showModalBottomSheet(
+      useSafeArea: true,
       backgroundColor: Theme.of(context).colorScheme.primaryContainer,
       isScrollControlled: true, context: context, builder: (ctx) {
       return NewExpense(onAddExpense: addExpense,);
@@ -66,25 +67,37 @@ class _Expenses extends State<Expenses>{
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
 
     Widget mainContent = const Center(
       child: Text("No Expenses to show Click + to add."),
     );
     if(_registeredExpense.isNotEmpty){
-      mainContent = Center(
+      mainContent = width < 600 ?  Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Chart(expenses: _registeredExpense,),
+            SingleChildScrollView(child: Chart(expenses: _registeredExpense,)),
             Expanded(child: ExpensesList(expenses: _registeredExpense, onRemoveExpense: removeExpense,))
           ],
         ),
-      );
+      ) : Center(
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(child: Chart(expenses: _registeredExpense,)),
+        Expanded(child: ExpensesList(expenses: _registeredExpense, onRemoveExpense: removeExpense,))
+      ],
+      ),
+    );
     }
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         actions: [
           IconButton(onPressed: _openAddExpenseOverlay, icon: const Icon(Icons.add,))
         ],
@@ -93,7 +106,6 @@ class _Expenses extends State<Expenses>{
       body: mainContent
     );
   }
-  
 }
 
 
