@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/models/meal.dart';
+import 'package:meals_app/widgets/meal_item.dart';
 
 class MealsScreen extends StatelessWidget{
-  MealsScreen({super.key, required this.title, required this.meals});
+  const MealsScreen({super.key, required this.title, required this.meals});
 
   final String title;
   final List<Meal> meals;
@@ -10,26 +11,28 @@ class MealsScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-    mainData() {
+    Widget mainData = ListView.builder(itemCount: meals.length,
+        itemBuilder: (context,index) => MealItem(meal: meals[index]));
       if(meals.isEmpty){
-        const Text("No data available to Show at this time.!");
-      }
-      else{
-        Container(
+        mainData = Center(
           child: Column(
-            children: ListView.builder(itemBuilder: (context,index) {
-              return meals.map((meal) => )
-            }),
-          ),
-        )
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text("No data available to Show at this time.!",style: Theme.of(context).textTheme.headlineLarge!.copyWith(color: Theme.of(context).colorScheme.primary)),
+              const SizedBox(height: 20,),
+              Text("Try selecting different Category..!", style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Theme.of(context).colorScheme.secondary),)
+            ],
+          )
+        );
       }
-    }
+
+
     
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
       ),
-      body: mainData(),
+      body: mainData,
     );
   }
 
