@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/Providers/favourites_provider.dart';
-import 'package:meals_app/Providers/meals_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:meals_app/screens/categories.dart';
 import 'package:meals_app/screens/filters.dart';
 import 'package:meals_app/screens/meals.dart';
 import 'package:meals_app/widgets/main_drawer.dart';
+import '../Providers/filters_provider.dart';
 
 
 const kInitialFilters = {
@@ -27,8 +27,6 @@ class TabsScreen extends ConsumerStatefulWidget{
 class _TabsScreenState extends ConsumerState<TabsScreen> {
 
   int selectedPageIndex = 0;
-  Map<Filters, bool> selectedFilters = kInitialFilters;
-
   void selectPage( int index){
     setState(() {
       selectedPageIndex = index;
@@ -38,36 +36,15 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
   Future<void> setScreen(String identifier) async {
     Navigator.pop(context);
     if(identifier == "Filters"){
-      final result = await Navigator.push<Map<Filters, bool>>
-        (context, MaterialPageRoute(builder: (ctx) => FiltersScreen(currentFilters: selectedFilters,)));
-
-      setState(() {
-        selectedFilters = result ?? kInitialFilters;
-      });
-
+      await Navigator.push<Map<Filters, bool>>
+        (context, MaterialPageRoute(builder: (ctx) => const FiltersScreen()));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
-    final meals = ref.watch(mealsProvider);
-    final availableMeals = meals.where((meal){
-      if(selectedFilters[Filters.glutenFree]! && !meal.isGlutenFree){
-        return false;
-      }
-      if(selectedFilters[Filters.lactoseFree]! && !meal.isLactoseFree){
-        return false;
-      }
-      if(selectedFilters[Filters.vegetarian]! && !meal.isVegetarian){
-        return false;
-      }
-      if(selectedFilters[Filters.vegan]! && !meal.isVegan){
-        return false;
-      }
-      return true;
-    }).toList();
-
+    
+    final availableMeals = ref.watch(filteredMealProvider);
     Widget activePage = CategoriesScreen(
       availableMeals: availableMeals,);
 
