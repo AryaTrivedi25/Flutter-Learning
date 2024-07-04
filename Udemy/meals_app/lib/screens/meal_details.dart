@@ -32,7 +32,19 @@ class MealDetailsScreen extends ConsumerWidget{
                   SnackBar(content: Text(message))
               );
           },
-              icon: Icon(isFavourite ? Icons.star : Icons.star_border))
+              icon:
+              AnimatedSwitcher(
+                  duration: const Duration(seconds: 1),
+                  transitionBuilder: (child, animation){
+                  return RotationTransition(
+                    turns: Tween(begin: 0.9, end: 1.0).animate(animation),
+                    child: child,);
+                  },
+                  child: Icon(isFavourite ? Icons.star : Icons.star_border,
+                    key: ValueKey(isFavourite),
+                  )
+              )
+          )
         ],
       ),
       body: SingleChildScrollView(
@@ -42,11 +54,14 @@ class MealDetailsScreen extends ConsumerWidget{
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.network(
-                meal.imageUrl,
-                height: 300,
-                width: double.infinity,
-                fit: BoxFit.cover,
+              Hero(
+                tag: meal.id,
+                child: Image.network(
+                  meal.imageUrl,
+                  height: 300,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
               const SizedBox(height: 20,),
               Text("Ingredients", style: Theme.of(context).textTheme.titleLarge!.copyWith(
