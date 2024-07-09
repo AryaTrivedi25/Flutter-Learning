@@ -23,7 +23,6 @@ class _GroceryListState extends State<GroceryList> {
   var isLoading = true;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     setState(() {
       _loadItems();
