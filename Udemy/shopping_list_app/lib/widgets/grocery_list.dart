@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:ffi';
+
 
 import 'package:flutter/material.dart';
-import 'package:shopping_list_app/main.dart';
+
 import 'package:shopping_list_app/widgets/new_item.dart';
 import 'package:http/http.dart' as http;
 
