@@ -73,7 +73,7 @@ class _GroceryListState extends State<GroceryList> {
     // print("Helo ${response.statusCode}");
 
 
-    
+
 
 
   }
@@ -103,7 +103,7 @@ class _GroceryListState extends State<GroceryList> {
         "Shopping-list/${item.id}.json");
 
     final response = await http.delete(url);
-    
+
     if(response.statusCode >= 400){
       setState(() {
         _groceryItems.insert(index, item);
