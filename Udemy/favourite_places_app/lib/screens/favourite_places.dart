@@ -1,15 +1,16 @@
+import 'package:favourite_places_app/screens/add_place.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:favourite_places_app/widgets/places_list.dart';
 
-class FavouritePlaces extends ConsumerStatefulWidget{
-  const FavouritePlaces({super.key});
+class FavouritePlacesScreen extends ConsumerStatefulWidget{
+  const FavouritePlacesScreen({super.key});
 
   @override
-  ConsumerState<FavouritePlaces> createState() => _FavouritePlacesState();
+  ConsumerState<FavouritePlacesScreen> createState() => _FavouritePlacesState();
 }
 
-class _FavouritePlacesState extends ConsumerState<FavouritePlaces> {
+class _FavouritePlacesState extends ConsumerState<FavouritePlacesScreen> {
 
 
 
@@ -19,7 +20,7 @@ class _FavouritePlacesState extends ConsumerState<FavouritePlaces> {
       appBar: AppBar(
         title: const Text("Your Places"),
         actions: [
-          IconButton(onPressed: (){}, icon: const Icon(Icons.add)),
+          IconButton(onPressed: (){const AddPlaceScreen();}, icon: const Icon(Icons.add)),
         ],
       ),
       body: PlacesList(places: [],),
